@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div style="background-color: #e3f2fd; width: 600px; padding: 50px; border-radius: 50px;">
+        <form method="post" action="" style="max-width: 500px;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br/>
+            <input type="submit" value="Login" class="btn btn-dark">
+        </form><br/><br/>
+        <h5> if you don't have an account please <a href={% url "accounts:register"%}>Register</a> .</h5>
+    </div>
+
+{% endblock %}

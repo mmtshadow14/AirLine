@@ -1,0 +1,7 @@
+Pillow
+celery
+requests
+django-celery-beat
+pytz
+redis
+djangorestframework
