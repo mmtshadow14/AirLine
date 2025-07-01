@@ -47,7 +47,8 @@ class register(View):
             is_phone_number_exist = User.objects.get(phone_number=form.cleaned_data['phone_number'])
             if not is_phone_number_exist:
                 user = User.objects.create(phone_number=form.cleaned_data['phone_number'],
-                                           full_name=form.cleaned_data['full_name'], address=form.cleaned_data['address'],
+                                           full_name=form.cleaned_data['full_name'],
+                                           address=form.cleaned_data['address'],
                                            role='user')
                 activation_code = random.randint(1000, 9999)
                 ActivationCode.objects.create(phone_number=form.cleaned_data['phone_number'],
@@ -92,6 +93,7 @@ class activation(View):
             return redirect('accounts:activation')
         messages.error(request, 'something went wrong')
         return redirect('accounts:activation')
+
 
 # login via this view
 class login(View):

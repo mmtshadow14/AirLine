@@ -20,6 +20,13 @@
 
 </nav>
     <center>
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="alert alert-primary" role="alert" style="width: 500px;">
+                    <h5>{{ msg }}</h5>
+                </div>
+            {% endfor %}
+        {% endif %}
         <div style="margin-left: 100px;">
             {% block content %} {% endblock %}
         </div>
