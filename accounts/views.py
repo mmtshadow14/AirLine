@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login, logout
 
 # employees app's models
 from .models import User, ActivationCode
@@ -44,12 +45,13 @@ class register(View):
     def post(self, request):
         form = self.from_class(request.POST)
         if form.is_valid():
-            is_phone_number_exist = User.objects.get(phone_number=form.cleaned_data['phone_number'])
+            is_phone_number_exist = User.objects.filter(phone_number=form.cleaned_data['phone_number'])
             if not is_phone_number_exist:
-                user = User.objects.create(phone_number=form.cleaned_data['phone_number'],
-                                           full_name=form.cleaned_data['full_name'],
-                                           address=form.cleaned_data['address'],
-                                           role='user')
+                user = User.objects.create_user(phone_number=form.cleaned_data['phone_number'],
+                                                password=form.cleaned_data['password'],
+                                                full_name=form.cleaned_data['full_name'],
+                                                address=form.cleaned_data['address'],
+                                                role='user')
                 activation_code = random.randint(1000, 9999)
                 ActivationCode.objects.create(phone_number=form.cleaned_data['phone_number'],
                                               activation_code=activation_code)
@@ -96,7 +98,7 @@ class activation(View):
 
 
 # login via this view
-class login(View):
+class loginView(View):
     """
     this is a view to log users in
     """
@@ -111,24 +113,17 @@ class login(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             user = User.objects.get(phone_number=form.cleaned_data['phone_number'])
-            if user:
-                if user.is_active:
-                    if user.password == form.cleaned_data['password']:
-                        login(request, user)
-                        messages.success(request, 'you logged in successfully')
-                        return redirect('accounts:home')
-                    messages.error(request, 'Incorrect password')
-                    return redirect('accounts:login')
-                messages.error(request, 'this account is inactive')
-                return redirect('accounts:activation')
-            messages.error(request, 'invalid phone number')
+            if user.is_active and user.password == form.cleaned_data['password']:
+                login(request, user)
+                messages.success(request, 'You are now logged in', 'success')
+                return redirect('accounts:home')
+            messages.error(request, 'we couldn\'t be able to verify you with this information')
             return redirect('accounts:login')
-        messages.error(request, 'something went wrong')
+        messages.error(request, 'invalid credentials')
         return redirect('accounts:login')
 
-
 # logout via this view
-class logout(LoginRequiredMixin, View):
+class logoutView(LoginRequiredMixin, View):
     """
     this is a view to log users out
     """
