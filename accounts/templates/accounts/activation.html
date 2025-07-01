@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    
+    <div style="background-color: #e3f2fd; width: 600px; padding: 50px; border-radius: 50px;">
+        <form method="post" action="" style="max-width: 500px;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br/>
+            <input type="submit" value="Activate" class="btn btn-dark">
+        </form><br/>
+    </div>
 {% endblock %}

@@ -44,17 +44,21 @@ class register(View):
     def post(self, request):
         form = self.from_class(request.POST)
         if form.is_valid():
-            user = User.objects.create(phone_number=form.cleaned_data['phone_number'],
-                                       full_name=form.cleaned_data['full_name'], address=form.cleaned_data['address'],
-                                       role='user')
-            activation_code = random.randint(1000, 9999)
-            ActivationCode.objects.create(phone_number=form.cleaned_data['phone_number'],
-                                          activation_code=activation_code)
-            store_info = store_activation_info(request, form.cleaned_data['phone_number'], activation_code)
-            store_info.store_activation_info_in_session()
-            user.save()
-            messages.success(request, 'Account was successfully created, new lets activate your account')
-            return redirect('accounts:activation')
+            is_phone_number_exist = User.objects.get(phone_number=form.cleaned_data['phone_number'])
+            if not is_phone_number_exist:
+                user = User.objects.create(phone_number=form.cleaned_data['phone_number'],
+                                           full_name=form.cleaned_data['full_name'], address=form.cleaned_data['address'],
+                                           role='user')
+                activation_code = random.randint(1000, 9999)
+                ActivationCode.objects.create(phone_number=form.cleaned_data['phone_number'],
+                                              activation_code=activation_code)
+                store_info = store_activation_info(request, form.cleaned_data['phone_number'], activation_code)
+                store_info.store_activation_info_in_session()
+                user.save()
+                messages.success(request, 'Account was successfully created, new lets activate your account')
+                return redirect('accounts:activation')
+            messages.error(request, "this phone already exists")
+            return redirect('accounts:register')
         messages.error(request, 'information was Invalid, please try again')
         return redirect('accounts:register')
 
