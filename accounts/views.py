@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 from .models import User, ActivationCode
 
 # employees app's forms
-from .forms import register_form, activation_form, login_form
+from .forms import register_form, activation_form, login_form, add_staff_form
 
 # utils
 from utils import store_activation_info
@@ -133,3 +133,55 @@ class logoutView(LoginRequiredMixin, View):
         logout(request)
         messages.success(request, 'you logged out successfully')
         return redirect('accounts:home')
+
+
+class add_staff(View):
+    form_class = add_staff_form
+    template_name = 'accounts/add_staff.html'
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            is_phone_number_exist = User.objects.filter(phone_number=form.cleaned_data['phone_number'])
+            if not is_phone_number_exist:
+                user = User.objects.create_user(phone_number=form.cleaned_data['phone_number'],
+                                                password=form.cleaned_data['password'],
+                                                full_name=form.cleaned_data['full_name'],
+                                                address=form.cleaned_data['address'],
+                                                role=form.cleaned_data['role'],
+                                                is_staff=True,
+                                                is_active=True, )
+                user.save()
+                messages.success(request, 'staff Account was successfully created')
+                return redirect('accounts:home')
+            messages.error(request, 'this phone number already exists')
+            return redirect('accounts:add_staff')
+        messages.error(request, 'invalid credentials')
+        return redirect('accounts:add_staff')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

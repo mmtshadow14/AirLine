@@ -14,6 +14,9 @@
         <a class="navbar-brand" href={% url "accounts:home" %} >SKY AirLine</a>
         <a class="navbar-brand" href={% url "accounts:home" %}>Home</a>
         <a class="navbar-brand" href="#">My Tickets</a>
+        {% if user.is_authenticated and user.is_staff == True %}
+            <a class="navbar-brand" href={% url "accounts:add_staff" %}>Add staff</a>
+        {% endif %}
         <a class="btn btn-dark" style="margin-left: 1830px;" href={% url "accounts:register" %}>Register/Login</a>
         <a class="btn btn-dark" style="margin-left: 30px;" href={% url "accounts:logout" %}>Logout</a>
     </div>
