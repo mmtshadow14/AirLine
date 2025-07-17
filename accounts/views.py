@@ -135,7 +135,7 @@ class logoutView(LoginRequiredMixin, View):
         return redirect('accounts:home')
 
 
-class add_staff(View):
+class add_staff(LoginRequiredMixin, View):
     form_class = add_staff_form
     template_name = 'accounts/add_staff.html'
 
