@@ -122,6 +122,7 @@ class loginView(View):
         messages.error(request, 'invalid credentials')
         return redirect('accounts:login')
 
+
 # logout via this view
 class logoutView(LoginRequiredMixin, View):
     """
