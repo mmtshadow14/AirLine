@@ -9,7 +9,7 @@
                 <h4>des: {{ flight.destination }} ,,, arrives at: {{ flight.arrival_time }}</h4>
                 <h5>Ticket Cost: ${{ flight.flight_price }}</h5>
                 <h5>Tickets remain: {{ flight.flight_capacity }}</h5>
-                <a class="btn btn-dark" style="margin-top: 10px; padding-left: 30px; padding-right: 30px;" href={% url "accounts:register" %}>Book</a>
+                <a class="btn btn-dark" style="margin-top: 10px; padding-left: 30px; padding-right: 30px;" href={% url "flights:flight_detail" flight.flight_id %}>Book</a>
             </div>
         </div>
     {% endfor %}
