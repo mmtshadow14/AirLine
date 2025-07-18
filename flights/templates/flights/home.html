@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>>>>Tickets<<<</h2>
+    {% for flight in all_flights %}
+        <div style="background-color: #e3f2fd; max-width: 700px; min-height: 300px; border-radius: 35px;">
+            <div style="margin: 70px; padding-top: 80px;">
+                <h4>dep: {{ flight.departure }} ,,, leaves at: {{ flight.departure_time }}</h4>
+                <h4>des: {{ flight.destination }} ,,, arrives at: {{ flight.arrival_time }}</h4>
+                <h5>Ticket Cost: ${{ flight.flight_price }}</h5>
+                <h5>Tickets remain: {{ flight.flight_capacity }}</h5>
+                <a class="btn btn-dark" style="margin-top: 10px;" href={% url "accounts:register" %}>Reserve</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -11,8 +11,8 @@
 <nav class="navbar" style="background-color: #e3f2fd; margin: 50px; border-radius: 50px; height: 70px; " data-bs-theme="light">
 
     <div class="container-fluid" style="display: inline-block; padding-left: 40px;">
-        <a class="navbar-brand" href={% url "accounts:home" %} >SKY AirLine</a>
-        <a class="navbar-brand" href={% url "accounts:home" %}>Home</a>
+        <a class="navbar-brand" href={% url "home" %} >SKY AirLine</a>
+        <a class="navbar-brand" href={% url "home" %}>Home</a>
         <a class="navbar-brand" href="#">My Tickets</a>
         {% if user.is_authenticated and user.is_staff == True %}
             <a class="navbar-brand" href={% url "accounts:add_staff" %}>Add staff</a>

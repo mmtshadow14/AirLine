@@ -6,6 +6,7 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User, ActivationCode
 
 
+# custom UserModel Admin
 class CustomUserAdmin(UserAdmin):
     """
     custom user admin
@@ -14,8 +15,8 @@ class CustomUserAdmin(UserAdmin):
     list_display = ['phone_number', 'is_staff', 'is_superuser', 'is_active', ]
     list_filter = ['phone_number', 'is_staff', 'is_superuser', 'is_active', ]
     fieldsets = [
-        ('Authentication', {'fields': ('phone_number', 'full_name', 'password')}),
-        ('Authentication', {'fields': ('wallet',)}),
+        ('Authentication', {'fields': ('phone_number', 'full_name', 'password', 'role')}),
+        ('Financial', {'fields': ('wallet',)}),
         ('User Role', {'fields': ('is_superuser', 'is_staff', 'is_active')}),
     ]
     add_fieldsets = [

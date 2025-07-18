@@ -19,16 +19,6 @@ from .forms import register_form, activation_form, login_form, add_staff_form
 from utils import store_activation_info
 
 
-# home page view
-class home(View):
-    """
-    a class to render the home page and show home page objects
-    """
-
-    def get(self, request):
-        return render(request, 'accounts/index.html')
-
-
 # register normal users
 class register(View):
     """
@@ -135,7 +125,11 @@ class logoutView(LoginRequiredMixin, View):
         return redirect('accounts:home')
 
 
+# add staff with different roles
 class add_staff(LoginRequiredMixin, View):
+    """
+    this is a view to add a staff user with different roles for the department.
+    """
     form_class = add_staff_form
     template_name = 'accounts/add_staff.html'
 
@@ -162,26 +156,3 @@ class add_staff(LoginRequiredMixin, View):
             return redirect('accounts:add_staff')
         messages.error(request, 'invalid credentials')
         return redirect('accounts:add_staff')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

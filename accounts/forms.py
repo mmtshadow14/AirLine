@@ -52,7 +52,12 @@ class login_form(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
 
+# add staff form
 class add_staff_form(forms.Form):
+    """
+    this form is going to be used in the add_staff view to get the information
+     to register a new staff with a special role.
+    """
     phone_number = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
