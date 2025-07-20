@@ -1,16 +1,287 @@
 {% extends 'base.html' %}
 
+<!-- Hero Section -->
 {% block content %}
-    <h2>>>>Tickets<<<</h2>
-    {% for flight in all_flights %}
-        <div style="background-color: #e3f2fd; max-width: 700px; min-height: 300px; border-radius: 35px;">
-            <div style="margin: 70px; padding-top: 80px;">
-                <h4>dep: {{ flight.departure }} ,,, leaves at: {{ flight.departure_time }}</h4>
-                <h4>des: {{ flight.destination }} ,,, arrives at: {{ flight.arrival_time }}</h4>
-                <h5>Ticket Cost: ${{ flight.flight_price }}</h5>
-                <h5>Tickets remain: {{ flight.flight_capacity }}</h5>
-                <a class="btn btn-dark" style="margin-top: 10px; padding-left: 30px; padding-right: 30px;" href={% url "flights:flight_detail" flight.flight_id %}>Book</a>
+   <div class="hero-bg text-white py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="md:w-1/2">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">Fly With Confidence</h1>
+                <p class="text-xl mb-8">Discover the world with SkyWings Airlines. Book your next adventure with our exclusive deals and premium service.</p>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md text-lg font-medium">Explore Destinations</button>
             </div>
         </div>
-    {% endfor %}
+    </div>
+
+    <!-- Flight Search -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 mb-16">
+        <div class="bg-white rounded-lg shadow-xl p-6">
+            <div class="flex flex-col md:flex-row md:items-end md:space-x-4">
+                <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">From</label>
+                    <div class="relative">
+                        <input type="text" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="City or Airport">
+                        <i class="fas fa-plane-departure absolute right-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">To</label>
+                    <div class="relative">
+                        <input type="text" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="City or Airport">
+                        <i class="fas fa-plane-arrival absolute right-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Dates</label>
+                    <div class="relative">
+                        <input type="text" class="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Select Dates" onfocus="(this.type='date')">
+                        <i class="fas fa-calendar-alt absolute right-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/4">
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-md font-medium">Search Flights</button>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center">
+                <input type="checkbox" id="roundtrip" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                <label for="roundtrip" class="ml-2 text-sm text-gray-700">Round Trip</label>
+                <div class="ml-6 flex items-center">
+                    <input type="checkbox" id="nonstop" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="nonstop" class="ml-2 text-sm text-gray-700">Non-stop only</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Destinations -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-center">Popular Destinations</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Destination 1 -->
+            <div class="destination-card relative rounded-lg overflow-hidden h-64">
+                <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80" alt="Paris" class="w-full h-full object-cover">
+                <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">
+                    <h3 class="text-white text-xl font-bold">Paris, France</h3>
+                    <p class="text-white">From $399</p>
+                    <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max">Book Now</button>
+                </div>
+                <div class="absolute bottom-0 left-0 p-6">
+                    <h3 class="text-white text-xl font-bold">Paris, France</h3>
+                    <p class="text-white">From $399</p>
+                </div>
+            </div>
+
+            <!-- Destination 2 -->
+            <div class="destination-card relative rounded-lg overflow-hidden h-64">
+                <img src="https://images.unsplash.com/photo-1538970272646-f61fabb3be4f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1472&q=80" alt="Tokyo" class="w-full h-full object-cover">
+                <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">
+                    <h3 class="text-white text-xl font-bold">Tokyo, Japan</h3>
+                    <p class="text-white">From $899</p>
+                    <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max">Book Now</button>
+                </div>
+                <div class="absolute bottom-0 left-0 p-6">
+                    <h3 class="text-white text-xl font-bold">Tokyo, Japan</h3>
+                    <p class="text-white">From $899</p>
+                </div>
+            </div>
+
+            <!-- Destination 3 -->
+            <div class="destination-card relative rounded-lg overflow-hidden h-64">
+                <img src="https://images.unsplash.com/photo-1518391846015-55a9cc003b25?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="New York" class="w-full h-full object-cover">
+                <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">
+                    <h3 class="text-white text-xl font-bold">New York, USA</h3>
+                    <p class="text-white">From $299</p>
+                    <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max">Book Now</button>
+                </div>
+                <div class="absolute bottom-0 left-0 p-6">
+                    <h3 class="text-white text-xl font-bold">New York, USA</h3>
+                    <p class="text-white">From $299</p>
+                </div>
+            </div>
+
+            <!-- Destination 4 -->
+            <div class="destination-card relative rounded-lg overflow-hidden h-64">
+                <img src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1530&q=80" alt="Sydney" class="w-full h-full object-cover">
+                <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">
+                    <h3 class="text-white text-xl font-bold">Sydney, Australia</h3>
+                    <p class="text-white">From $799</p>
+                    <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max">Book Now</button>
+                </div>
+                <div class="absolute bottom-0 left-0 p-6">
+                    <h3 class="text-white text-xl font-bold">Sydney, Australia</h3>
+                    <p class="text-white">From $799</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flight Deals -->
+    <div class="bg-gray-100 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-8 text-center">Best Flight Deals</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Flight 1 -->
+                <div class="flight-card bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold">New York to London</h3>
+                                <p class="text-gray-600">Round Trip • Economy</p>
+                            </div>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">HOT DEAL</span>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-plane-departure text-blue-600 mr-2"></i>
+                                <span>JFK → LHR</span>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-gray-500">Jun 15 - Jun 22</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Flight Duration</p>
+                                <p class="font-medium">7h 15m</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Aircraft</p>
+                                <p class="font-medium">Boeing 787</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Price per person</p>
+                                <p class="text-2xl font-bold text-blue-600">$499</p>
+                            </div>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium book-flight" data-flight="New York to London" data-price="499">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flight 2 -->
+                <div class="flight-card bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold">Los Angeles to Tokyo</h3>
+                                <p class="text-gray-600">Round Trip • Premium Economy</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-plane-departure text-blue-600 mr-2"></i>
+                                <span>LAX → HND</span>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-gray-500">Jul 10 - Jul 24</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Flight Duration</p>
+                                <p class="font-medium">11h 30m</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Aircraft</p>
+                                <p class="font-medium">Airbus A350</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Price per person</p>
+                                <p class="text-2xl font-bold text-blue-600">$1,099</p>
+                            </div>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium book-flight" data-flight="Los Angeles to Tokyo" data-price="1099">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flight 3 -->
+                <div class="flight-card bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold">Chicago to Paris</h3>
+                                <p class="text-gray-600">Round Trip • Business Class</p>
+                            </div>
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">LAST MINUTE</span>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-plane-departure text-blue-600 mr-2"></i>
+                                <span>ORD → CDG</span>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-gray-500">May 28 - Jun 5</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Flight Duration</p>
+                                <p class="font-medium">8h 10m</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Aircraft</p>
+                                <p class="font-medium">Boeing 777</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Price per person</p>
+                                <p class="text-2xl font-bold text-blue-600">$2,199</p>
+                            </div>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium book-flight" data-flight="Chicago to Paris" data-price="2199">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why Choose Us -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h2 class="text-3xl font-bold mb-12 text-center">Why Choose SkyWings</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-shield-alt text-blue-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Safe Travels</h3>
+                <p class="text-gray-600">Our top priority is your safety with industry-leading standards and protocols.</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-wifi text-blue-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Free WiFi</h3>
+                <p class="text-gray-600">Stay connected with complimentary high-speed WiFi on all international flights.</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-utensils text-blue-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Gourmet Dining</h3>
+                <p class="text-gray-600">Enjoy chef-curated meals inspired by global cuisines on all long-haul flights.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="bg-blue-600 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <h2 class="text-2xl font-bold mb-2">Get Exclusive Deals</h2>
+                    <p>Subscribe to our newsletter and be the first to know about special offers and promotions.</p>
+                </div>
+                <div class="md:w-1/2">
+                    <form class="flex flex-col sm:flex-row gap-4">
+                        <input type="email" placeholder="Your email address" class="flex-grow p-3 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <button type="submit" class="bg-white text-blue-600 hover:bg-gray-100 px-6 py-3 rounded-md font-medium">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
