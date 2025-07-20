@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div style="background-color: #e3f2fd; width: 600px; padding: 50px; border-radius: 50px;">
-        <form method="post" action="" style="max-width: 500px;">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <br/>
-            <input type="submit" value="Register" class="btn btn-dark">
-        </form><br/>
-        <h5> if you already have an account please <a href={% url "accounts:login"%}>Login</a> .</h5>
-    </div>
+    <center>
+        <br/><br/><br/><br/><br/><br/><br/><br/>
+        <div style="background-color: #e3f2fd; width: 600px; padding: 50px; border-radius: 50px;">
+            <form method="post" action="" style="max-width: 500px;">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br/>
+                <input type="submit" value="Register" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+            </form><br/>
+            <h5> if you already have an account please <a href={% url "accounts:login"%}>Login</a> .</h5>
+        </div>
+        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    </center>
 {% endblock %}
