@@ -54,20 +54,20 @@
 
     <!-- Popular Destinations -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <h2 class="text-3xl font-bold mb-8 text-center">Popular Destinations</h2>
+        <h2 class="text-3xl font-bold mb-8 text-center">Popular Tickets</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Destination 1 -->
             {% for flight in all_flights %}
             <div class="destination-card relative rounded-lg overflow-hidden h-64">
-                <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80" alt="Paris" class="w-full h-full object-cover">
+                <img class="w-full h-full object-cover" src={{ bgo.back_ground_for_flights.url }}>
                 <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">
-                    <h3 class="text-white text-xl font-bold">Paris, France</h3>
-                    <p class="text-white">From $399</p>
-                    <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max">Book Now</button>
+                    <h3 class="text-white text-xl font-bold">{{flight.departure}} TO {{ flight.destination }}</h3>
+                    <p class="text-white">${{ flight.flight_price }}</p>
+                    <a class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max" href={% url "flights:flight_detail" flight.flight_id %}>Book Now</a>
                 </div>
                 <div class="absolute bottom-0 left-0 p-6">
-                    <h3 class="text-white text-xl font-bold">Paris, France</h3>
-                    <p class="text-white">From $399</p>
+                    <h3 class="text-xl font-bold">{{flight.departure}} TO {{ flight.destination }}</h3>
+                    <p class="text-sm text-gray-500">${{ flight.flight_price }}</p>
                 </div>
             </div>
             {% endfor %}
