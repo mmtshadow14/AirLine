@@ -4,7 +4,7 @@ from django.views import View
 from django.contrib import messages
 
 # in app models
-from flights.models import Flights, Tickets
+from flights.models import Flights, Tickets, homepage_objects
 
 
 # view for showing the home page
@@ -15,7 +15,8 @@ class home(View):
 
     def get(self, request):
         all_flights = Flights.objects.all()
-        return render(request, 'flights/home.html', {'all_flights': all_flights})
+        back_ground_obj = homepage_objects.objects.get(object_id=1)
+        return render(request, 'flights/home.html', {'all_flights': all_flights, 'bgo': back_ground_obj})
 
 
 # flight detail view to show the detail of the flight

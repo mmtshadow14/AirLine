@@ -57,6 +57,7 @@
         <h2 class="text-3xl font-bold mb-8 text-center">Popular Destinations</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Destination 1 -->
+            {% for flight in all_flights %}
             <div class="destination-card relative rounded-lg overflow-hidden h-64">
                 <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80" alt="Paris" class="w-full h-full object-cover">
                 <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">
@@ -69,48 +70,49 @@
                     <p class="text-white">From $399</p>
                 </div>
             </div>
+            {% endfor %}
 
-            <!-- Destination 2 -->
-            <div class="destination-card relative rounded-lg overflow-hidden h-64">
-                <img src="https://images.unsplash.com/photo-1538970272646-f61fabb3be4f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1472&q=80" alt="Tokyo" class="w-full h-full object-cover">
-                <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">
-                    <h3 class="text-white text-xl font-bold">Tokyo, Japan</h3>
-                    <p class="text-white">From $899</p>
-                    <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max">Book Now</button>
-                </div>
-                <div class="absolute bottom-0 left-0 p-6">
-                    <h3 class="text-white text-xl font-bold">Tokyo, Japan</h3>
-                    <p class="text-white">From $899</p>
-                </div>
-            </div>
-
-            <!-- Destination 3 -->
-            <div class="destination-card relative rounded-lg overflow-hidden h-64">
-                <img src="https://images.unsplash.com/photo-1518391846015-55a9cc003b25?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="New York" class="w-full h-full object-cover">
-                <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">
-                    <h3 class="text-white text-xl font-bold">New York, USA</h3>
-                    <p class="text-white">From $299</p>
-                    <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max">Book Now</button>
-                </div>
-                <div class="absolute bottom-0 left-0 p-6">
-                    <h3 class="text-white text-xl font-bold">New York, USA</h3>
-                    <p class="text-white">From $299</p>
-                </div>
-            </div>
-
-            <!-- Destination 4 -->
-            <div class="destination-card relative rounded-lg overflow-hidden h-64">
-                <img src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1530&q=80" alt="Sydney" class="w-full h-full object-cover">
-                <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">
-                    <h3 class="text-white text-xl font-bold">Sydney, Australia</h3>
-                    <p class="text-white">From $799</p>
-                    <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max">Book Now</button>
-                </div>
-                <div class="absolute bottom-0 left-0 p-6">
-                    <h3 class="text-white text-xl font-bold">Sydney, Australia</h3>
-                    <p class="text-white">From $799</p>
-                </div>
-            </div>
+{#            <!-- Destination 2 -->#}
+{#            <div class="destination-card relative rounded-lg overflow-hidden h-64">#}
+{#                <img src="https://images.unsplash.com/photo-1538970272646-f61fabb3be4f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1472&q=80" alt="Tokyo" class="w-full h-full object-cover">#}
+{#                <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">#}
+{#                    <h3 class="text-white text-xl font-bold">Tokyo, Japan</h3>#}
+{#                    <p class="text-white">From $899</p>#}
+{#                    <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max">Book Now</button>#}
+{#                </div>#}
+{#                <div class="absolute bottom-0 left-0 p-6">#}
+{#                    <h3 class="text-white text-xl font-bold">Tokyo, Japan</h3>#}
+{#                    <p class="text-white">From $899</p>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <!-- Destination 3 -->#}
+{#            <div class="destination-card relative rounded-lg overflow-hidden h-64">#}
+{#                <img src="https://images.unsplash.com/photo-1518391846015-55a9cc003b25?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="New York" class="w-full h-full object-cover">#}
+{#                <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">#}
+{#                    <h3 class="text-white text-xl font-bold">New York, USA</h3>#}
+{#                    <p class="text-white">From $299</p>#}
+{#                    <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max">Book Now</button>#}
+{#                </div>#}
+{#                <div class="absolute bottom-0 left-0 p-6">#}
+{#                    <h3 class="text-white text-xl font-bold">New York, USA</h3>#}
+{#                    <p class="text-white">From $299</p>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <!-- Destination 4 -->#}
+{#            <div class="destination-card relative rounded-lg overflow-hidden h-64">#}
+{#                <img src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1530&q=80" alt="Sydney" class="w-full h-full object-cover">#}
+{#                <div class="destination-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-300">#}
+{#                    <h3 class="text-white text-xl font-bold">Sydney, Australia</h3>#}
+{#                    <p class="text-white">From $799</p>#}
+{#                    <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium w-max">Book Now</button>#}
+{#                </div>#}
+{#                <div class="absolute bottom-0 left-0 p-6">#}
+{#                    <h3 class="text-white text-xl font-bold">Sydney, Australia</h3>#}
+{#                    <p class="text-white">From $799</p>#}
+{#                </div>#}
+{#            </div>#}
         </div>
     </div>
 

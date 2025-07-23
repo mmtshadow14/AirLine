@@ -33,3 +33,11 @@ class Tickets(models.Model):
 
     def __str__(self):
         return f'{self.ticket_owner.full_name} owns Ticket for {self.flight_id.id} flight.'
+
+
+class homepage_objects(models.Model):
+    object_id = models.IntegerField(primary_key=True, unique=True)
+    back_ground_for_flights = models.ImageField(upload_to='obj/')
+
+    def __str__(self):
+        return str(self.object_id)
