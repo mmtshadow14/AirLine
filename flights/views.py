@@ -28,4 +28,6 @@ class flight_detail(View):
 
     def get(self, request, flight_id):
         flight = get_object_or_404(Flights, flight_id=flight_id)
-        return render(request, self.template_name, {'flight': flight})
+        back_ground_obj = homepage_objects.objects.get(object_id=1)
+        delta_t = flight.arrival_time - flight.departure_time
+        return render(request, self.template_name, {'flight': flight, 'bgo': back_ground_obj, "delta_t": delta_t})
