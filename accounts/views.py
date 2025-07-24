@@ -80,7 +80,7 @@ class activation(View):
                 user.save()
                 activation_info.delete()
                 messages.success(request, 'Account was successfully activated')
-                return redirect('accounts:home')
+                return redirect('flights:home')
             messages.error(request, 'Incorrect activation code')
             return redirect('accounts:activation')
         messages.error(request, 'something went wrong')
@@ -106,7 +106,7 @@ class loginView(View):
             if user.is_active and user.password == form.cleaned_data['password']:
                 login(request, user)
                 messages.success(request, 'You are now logged in', 'success')
-                return redirect('accounts:home')
+                return redirect('flights:home')
             messages.error(request, 'we couldn\'t be able to verify you with this information')
             return redirect('accounts:login')
         messages.error(request, 'invalid credentials')
@@ -122,7 +122,7 @@ class logoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         messages.success(request, 'you logged out successfully')
-        return redirect('accounts:home')
+        return redirect('flights:home')
 
 
 # add staff with different roles
@@ -151,7 +151,7 @@ class add_staff(LoginRequiredMixin, View):
                                                 is_active=True, )
                 user.save()
                 messages.success(request, 'staff Account was successfully created')
-                return redirect('accounts:home')
+                return redirect('flights:home')
             messages.error(request, 'this phone number already exists')
             return redirect('accounts:add_staff')
         messages.error(request, 'invalid credentials')

@@ -7,6 +7,7 @@ from . import views
 app_name = 'flights'
 
 urlpatterns = [
+    path('', views.home.as_view(), name='home'),
     path('flight_detail/<int:flight_id>/', views.flight_detail.as_view(), name='flight_detail'),
-    path('flight_detail/<int:flight_id>/', views.flight_detail.as_view(), name='book_flight'),
+    path('book_flight/<int:flight_id>/', views.book_flight.as_view(), name='book_flight'),
 ]

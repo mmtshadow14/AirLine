@@ -36,22 +36,25 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
                         <i class="fas fa-plane-departure text-blue-600 text-2xl mr-2"></i>
-                        <a class="text-xl font-bold text-blue-600" href={% url "home" %}>SkyWings</a>
+                        <a class="text-xl font-bold text-blue-600" href={% url "flights:home" %}>SkyWings</a>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href={% url "home" %}>Home</a>
-                        <a class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href={% url "home" %}>Flights</a>
-                        <a class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href={% url "home" %}>Destinations</a>
-                        <a class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href={% url "home" %}>Deals</a>
-                        <a class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href={% url "home" %}>Contact</a>
+                        <a class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href={% url "flights:home" %}>Home</a>
+                        <a class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href={% url "flights:home" %}>Flights</a>
+                        <a class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href={% url "flights:home" %}>My Account</a>
+                        <a class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" href={% url "flights:home" %}>My Tickets</a>
                     </div>
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+                    {% if not request.user.is_authenticated  %}
                     <div class="flex space-x-4">
                         <a  class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" href={% url "accounts:register" %}>Sign In</a>
-                        <a class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium" href={% url "accounts:login" %}>Log In</a>
+                        <a class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" href={% url "accounts:login" %}>Log In</a>
                     </div>
-                    <a class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium" href={% url "accounts:logout" %}>Log Out</a>
+                    {% endif %}
+                    {% if request.user.is_authenticated %}
+                        <a class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" href={% url "accounts:logout" %}>Log Out</a>
+                    {% endif %}
                 </div>
                 <div class="-mr-2 flex items-center sm:hidden">
                     <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" aria-controls="mobile-menu" aria-expanded="false" id="mobile-menu-button">
@@ -67,19 +70,36 @@
             <div class="pt-2 pb-3 space-y-1">
                 <a href="#" class="bg-blue-50 border-blue-500 text-blue-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
                 <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Flights</a>
-                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Destinations</a>
-                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Deals</a>
-                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Contact</a>
-                <div class="mt-4 pl-3">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">Sign In</button>
-                </div>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">My Account</a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">My Tickets</a>
+                {% if not request.user.is_authenticated %}
+                    <div class="mt-4 pl-3">
+                        <a class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">Sign In</a>
+                        <a class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" href={% url "accounts:login" %}>Log In</a>
+                    </div>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                    <div class="mt-4 pl-3">   
+                        <a class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" href={% url "accounts:logout" %}>Log Out</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </nav>
-
-{% block content %}
-	
-{% endblock %}
+    
+    <center>
+        {% if messages %}
+            {% for msg in messages %}
+                <div style="background-color: #e3f2fd; stroke: blue">
+                    <h1>{{ msg }}</h1>
+                </div>
+            {% endfor %}
+        {% endif %}    
+    </center>
+    
+    {% block content %}
+        
+    {% endblock %}
  
     <!-- Footer -->
     <footer class="bg-gray-900 text-white pt-12 pb-8">

@@ -25,6 +25,5 @@ from flights.views import home
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls', namespace='accounts'),),
-    path('flights/', include('flights.urls', namespace='flights'),),
-    path('', home.as_view(), name='home'),
+    path('', include('flights.urls', namespace='flights'),),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
