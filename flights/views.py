@@ -64,46 +64,45 @@ class all_flight(View):
     """
     a view to show all of the flights that are ready to be booked or to filter flights by dep and des
     """
-    template_name = 'flights/all_flight.html'
+    template_name = 'flights/all_flights.html'
     form_class = flight_filter_form
 
     def get(self, request, flight_dep=None, flight_des=None):
-        if flight_dep is None and flight_des is None:
-            flights = Flights.objects.all()
-            return render(request, self.template_name, {'flights': flights})
-        elif flight_dep is not None and flight_des is not None:
-            flights = Flights.objects.filter(departure=flight_dep, destination=flight_des)
+        flights = Flights.objects.all()
+        form = self.form_class
+        if flight_dep is not None and flight_des is not None:
+            flights = flights.filter(departure=flight_dep, destination=flight_des)
             if flights:
-                return render(request, self.template_name, {'flights': flights})
+                return render(request, self.template_name, {'flights': flights, 'form': form})
             messages.warning(request, 'we don\'t have any flights to fit your conditions.')
             return redirect('all_flights')
         elif flight_dep is not None and flight_des is None:
-            flights = Flights.objects.filter(departure=flight_dep)
+            flights = flights.filter(departure=flight_dep)
             if flights:
-                return render(request, self.template_name, {'flights': flights})
+                return render(request, self.template_name, {'flights': flights, 'form': form})
             messages.warning(request, 'we don\'t have any flights to fit your conditions.')
             return redirect('all_flights')
-        else:
+        elif flight_dep is None and flight_des is not None:
             flights = Flights.objects.filter(destination=flight_des)
             if flights:
-                return render(request, self.template_name, {'flights': flights})
+                return render(request, self.template_name, {'flights': flights, 'form': form})
             messages.warning(request, 'we don\'t have any flights to fit your conditions.')
             return redirect('all_flights')
-
+        return render(request, self.template_name, {'flights': flights, 'form': form})
     def post(self, request, flight_dep=None, flight_des=None):
         form = self.form_class(request.POST)
         if form.is_valid():
             if not form.cleaned_data['departure'] and not form.cleaned_data['destination']:
-                return redirect('flights:all_flight')
+                return redirect('flights:filter_flight')
             elif form.cleaned_data['departure'] and form.cleaned_data['destination']:
                 departure_filter = form.cleaned_data['departure']
                 destination_filter = form.cleaned_data['destination']
-                return redirect('flights:all_flight', departure_filter, destination_filter)
+                return redirect('flights:filter_flight', departure_filter, destination_filter)
             elif form.cleaned_data['departure'] and not form.cleaned_data['destination']:
                 departure_filter = form.cleaned_data['departure']
-                return redirect('flights:all_flight', departure_filter)
+                return redirect('flights:filter_flight', departure_filter)
             else:
                 destination_filter = form.cleaned_data['destination']
-                return redirect('flights:all_flight', destination_filter)
+                return redirect('flights:filter_flight', destination_filter)
         messages.error(request, 'something went wrong!')
         return redirect('flights:all_flight')
