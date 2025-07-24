@@ -2,6 +2,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # in app models
 from flights.models import Flights, Tickets, homepage_objects
@@ -31,3 +32,38 @@ class flight_detail(View):
         back_ground_obj = homepage_objects.objects.get(object_id=1)
         delta_t = flight.arrival_time - flight.departure_time
         return render(request, self.template_name, {'flight': flight, 'bgo': back_ground_obj, "delta_t": delta_t})
+
+
+class book_flight(LoginRequiredMixin, View):
+    def get(self, request, flight_id):
+        flight = get_object_or_404(Flights, flight_id=flight_id)
+        user = request.user
+        if user.is_authenticated and user.is_active == True:
+            if user.wallet > flight.flight_price:
+                user.wallet -= flight.flight_price
+                new_ticket = Tickets.objects.create(flight_id=flight, ticket_owner=user)
+                user.save()
+                new_ticket.save()
+                messages.success(request, 'Your flight has been successfully booked.')
+                return redirect('home')
+            messages.warning(request, 'Your wallet doesn\'t have enough credit.')
+            return redirect('book_flight', flight_id)
+        messages.error(request, 'you dont have an account or your account haven\'t activated yet')
+        return redirect('accounts:register')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

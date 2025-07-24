@@ -8,4 +8,5 @@ app_name = 'flights'
 
 urlpatterns = [
     path('flight_detail/<int:flight_id>/', views.flight_detail.as_view(), name='flight_detail'),
+    path('flight_detail/<int:flight_id>/', views.flight_detail.as_view(), name='book_flight'),
 ]
