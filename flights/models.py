@@ -32,7 +32,7 @@ class Tickets(models.Model):
     ticket_owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticket_owner')
 
     def __str__(self):
-        return f'{self.ticket_owner.full_name} owns Ticket for {self.flight_id.id} flight.'
+        return f'{self.ticket_owner.full_name} owns Ticket for {self.flight_id.flight_id} flight.'
 
 
 class homepage_objects(models.Model):

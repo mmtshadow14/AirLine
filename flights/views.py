@@ -45,7 +45,7 @@ class book_flight(LoginRequiredMixin, View):
                 user.save()
                 new_ticket.save()
                 messages.success(request, 'Your flight has been successfully booked.')
-                return redirect('home')
+                return redirect('flights:home')
             messages.warning(request, 'Your wallet doesn\'t have enough credit.')
             return redirect('book_flight', flight_id)
         messages.error(request, 'you dont have an account or your account haven\'t activated yet')
