@@ -42,6 +42,7 @@ class book_flight(LoginRequiredMixin, View):
     """
     a view to book a flight if the user have enough money in his wallet
     """
+
     def get(self, request, flight_id):
         flight = get_object_or_404(Flights, flight_id=flight_id)
         user = request.user
@@ -89,6 +90,7 @@ class all_flight(View):
             messages.warning(request, 'we don\'t have any flights to fit your conditions.')
             return redirect('all_flights')
         return render(request, self.template_name, {'flights': flights, 'form': form})
+
     def post(self, request, flight_dep=None, flight_des=None):
         form = self.form_class(request.POST)
         if form.is_valid():

@@ -31,67 +31,22 @@
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-plane-departure text-blue-600 text-2xl"></i>
-                <span class="text-xl font-bold text-blue-600">SkyWander</span>
-            </div>
-            <div class="hidden md:flex space-x-6">
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Flights</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Destinations</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Deals</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Contact</a>
-            </div>
-            <div class="flex items-center space-x-4">
-                <button class="hidden md:block text-gray-700 hover:text-blue-600">
-                    <i class="fas fa-user-circle text-xl"></i>
-                </button>
-                <button class="md:hidden text-gray-700">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
 
     <!-- Hero Section -->
     <section class="hero-gradient text-white py-16 md:py-24">
         <div class="container mx-auto px-4 text-center">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Discover Your Next Journey</h1>
             <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Explore our exclusive flight deals to amazing destinations around the world</p>
-
-            <div class="bg-white rounded-lg shadow-xl p-4 max-w-4xl mx-auto">
-                <div class="flex flex-col md:flex-row gap-4">
-                    <div class="flex-1">
-                        <label class="block text-gray-700 text-sm font-bold mb-1">From</label>
-                        <div class="relative">
-                            <input type="text" placeholder="City or Airport" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <i class="fas fa-map-marker-alt absolute right-3 top-3 text-gray-400"></i>
-                        </div>
-                    </div>
-                    <div class="flex-1">
-                        <label class="block text-gray-700 text-sm font-bold mb-1">To</label>
-                        <div class="relative">
-                            <input type="text" placeholder="City or Airport" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <i class="fas fa-map-marker-alt absolute right-3 top-3 text-gray-400"></i>
-                        </div>
-                    </div>
-                    <div class="flex-1">
-                        <label class="block text-gray-700 text-sm font-bold mb-1">Dates</label>
-                        <div class="relative">
-                            <input type="text" placeholder="Select Dates" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <i class="fas fa-calendar-alt absolute right-3 top-3 text-gray-400"></i>
-                        </div>
-                    </div>
-                    <div class="flex items-end">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 w-full">
-                            Search Flights
-                        </button>
-                    </div>
+            <center>
+                <div style="background-color: white; width: 600px; padding: 50px; border-radius: 50px;">
+                    <form method="post" action="" style="max-width: 500px;">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <br/>
+                        <input type="submit" value="Search" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    </form><br/>
                 </div>
-            </div>
+            </center>
         </div>
     </section>
 

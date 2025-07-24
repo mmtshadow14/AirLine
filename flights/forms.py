@@ -3,7 +3,7 @@ from django import forms
 
 
 # flight filter form
-class flight_filter_form(forms.ModelForm):
+class flight_filter_form(forms.Form):
     """
     a form to get info from user to filter the flights for him
     """
