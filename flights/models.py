@@ -19,6 +19,10 @@ class Flights(models.Model):
     flight_capacity = models.IntegerField()
     flight_price = models.BigIntegerField()
 
+    @property
+    def flight_time(self):
+        return self.arrival_time - self.departure_time
+
     def __str__(self):
         return f'flight {self.flight_id} is leaving {self.departure} to {self.destination}.'
 

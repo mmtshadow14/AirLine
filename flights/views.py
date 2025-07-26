@@ -50,8 +50,10 @@ class book_flight(LoginRequiredMixin, View):
             if user.wallet > flight.flight_price:
                 user.wallet -= flight.flight_price
                 new_ticket = Tickets.objects.create(flight_id=flight, ticket_owner=user)
+                flight.flight_capacity -= 1
                 user.save()
                 new_ticket.save()
+                flight.save()
                 messages.success(request, 'Your flight has been successfully booked.')
                 return redirect('flights:home')
             messages.warning(request, 'Your wallet doesn\'t have enough credit.')

@@ -50,67 +50,84 @@
         </div>
     </section>
 
-    <!-- Flight Listings -->
-    <section class="py-12 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Available Flights</h2>
-                <div class="flex space-x-2">
-                    <button class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
-                        <i class="fas fa-sliders-h mr-2"></i> Filters
-                    </button>
-                    <button class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
-                        Sort: <span class="font-medium">Price</span> <i class="fas fa-chevron-down ml-1"></i>
-                    </button>
+
+    <!-- Flight Deals -->
+    <div class="bg-gray-100 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-8 text-center">Available Tickets</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for flight in flights %}
+                <!-- Flight 1 -->
+                <div class="flight-card bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold">{{ flight.departure }} to {{ flight.destination }}</h3>
+                                <p class="text-gray-600">Round Trip • First Class</p>
+                            </div>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">HOT DEAL</span>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-plane-departure text-blue-600 mr-2"></i>
+                                <span>{{ flight.departure }} → {{ flight.destination }}</span>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-gray-500">{{ flight.flight_capacity }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Departure Time</p>
+                                <p class="font-medium">{{ flight.departure_time }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Arrival Time</p>
+                                <p class="font-medium">{{ flight.departure_time }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Price per person</p>
+                                <p class="text-2xl font-bold text-blue-600">${{ flight.flight_price }}</p>
+                            </div>
+                            <a class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium book-flight" data-flight="New York to London" data-price="499" href={% url "flights:flight_detail" flight.flight_id %}>Book Now</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div id="loading" class="flex justify-center items-center py-12">
-                <div class="loading-spinner h-12 w-12 border-4 border-blue-200 rounded-full"></div>
-            </div>
-
-            <div id="flights-container" class="grid grid-cols-1 gap-6">
-                <!-- Flight cards will be inserted here by JavaScript -->
-            </div>
-
-            <div class="mt-8 flex justify-center">
-                <button class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-300">
-                    Load More Flights
-                </button>
+                {% endfor %}
             </div>
         </div>
-    </section>
+    </div>
+
 
     <!-- Why Choose Us -->
-    <section class="py-12 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">Why Choose SkyWander</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center p-6 rounded-lg hover:bg-gray-50 transition duration-300">
-                    <div class="bg-blue-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-shield-alt text-blue-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Safe Travel</h3>
-                    <p class="text-gray-600">Your safety is our top priority with enhanced cleaning and contactless procedures.</p>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h2 class="text-3xl font-bold mb-12 text-center">Why Choose SkyWings</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-shield-alt text-blue-600 text-2xl"></i>
                 </div>
-                <div class="text-center p-6 rounded-lg hover:bg-gray-50 transition duration-300">
-                    <div class="bg-blue-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-tag text-blue-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Best Price Guarantee</h3>
-                    <p class="text-gray-600">Found a better deal? We'll match it and give you credit towards your next trip.</p>
+                <h3 class="text-xl font-bold mb-2">Safe Travels</h3>
+                <p class="text-gray-600">Our top priority is your safety with industry-leading standards and protocols.</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-wifi text-blue-600 text-2xl"></i>
                 </div>
-                <div class="text-center p-6 rounded-lg hover:bg-gray-50 transition duration-300">
-                    <div class="bg-blue-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-headset text-blue-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800">24/7 Support</h3>
-                    <p class="text-gray-600">Our customer service team is available around the clock to assist you.</p>
+                <h3 class="text-xl font-bold mb-2">Free WiFi</h3>
+                <p class="text-gray-600">Stay connected with complimentary high-speed WiFi on all international flights.</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-utensils text-blue-600 text-2xl"></i>
                 </div>
+                <h3 class="text-xl font-bold mb-2">Gourmet Dining</h3>
+                <p class="text-gray-600">Enjoy chef-curated meals inspired by global cuisines on all long-haul flights.</p>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- Newsletter -->
     <section class="py-12 bg-blue-50">
@@ -129,55 +146,55 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4 flex items-center">
-                        <i class="fas fa-plane-departure mr-2 text-blue-400"></i> SkyWander
-                    </h3>
-                    <p class="text-gray-400">Making travel accessible and enjoyable for everyone since 2010.</p>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-lg mb-4">Company</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">News</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Press</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-lg mb-4">Support</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Feedback</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-lg mb-4">Legal</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Accessibility</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2023 SkyWander. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+{#    <!-- Footer -->#}
+{#    <footer class="bg-gray-800 text-white py-12">#}
+{#        <div class="container mx-auto px-4">#}
+{#            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">#}
+{#                <div>#}
+{#                    <h3 class="text-xl font-bold mb-4 flex items-center">#}
+{#                        <i class="fas fa-plane-departure mr-2 text-blue-400"></i> SkyWander#}
+{#                    </h3>#}
+{#                    <p class="text-gray-400">Making travel accessible and enjoyable for everyone since 2010.</p>#}
+{#                    <div class="flex space-x-4 mt-4">#}
+{#                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>#}
+{#                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>#}
+{#                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>#}
+{#                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div>#}
+{#                    <h4 class="font-semibold text-lg mb-4">Company</h4>#}
+{#                    <ul class="space-y-2">#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">News</a></li>#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">Press</a></li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#                <div>#}
+{#                    <h4 class="font-semibold text-lg mb-4">Support</h4>#}
+{#                    <ul class="space-y-2">#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">Feedback</a></li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#                <div>#}
+{#                    <h4 class="font-semibold text-lg mb-4">Legal</h4>#}
+{#                    <ul class="space-y-2">#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>#}
+{#                        <li><a href="#" class="text-gray-400 hover:text-white">Accessibility</a></li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">#}
+{#                <p>&copy; 2023 SkyWander. All rights reserved.</p>#}
+{#            </div>#}
+{#        </div>#}
+{#    </footer>#}
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -189,78 +206,80 @@
 
             // Flight data
             const flights = [
+                {% for flight in flights %}
                 {
-                    id: 1,
-                    airline: "Delta Airlines",
+                    id: {{ flight.flight_id }},
+                    airline: "Flight From {{ flight.departure }} TO {{ flight.destination }}",
                     logo: "delta",
-                    departure: { city: "New York (JFK)", time: "08:30 AM", date: "Mon, Jun 12" },
-                    arrival: { city: "London (LHR)", time: "08:45 PM", date: "Mon, Jun 12" },
-                    duration: "7h 15m",
+                    departure: { city: "{{ flight.departure_time }}", time: "{{ flight.departure }}", date: "" },
+                    arrival: { city: "{{ flight.arrival_time }}", time: "{{ flight.destination }}", date: "" },
+                    duration: "{{ flight.flight_time }}",
                     stops: "Non-stop",
-                    price: 589,
+                    price: {{ flight.flight_price }},
                     deal: "Best Deal",
-                    seats: 5
+                    seats: {{ flight.flight_capacity }}
                 },
-                {
-                    id: 2,
-                    airline: "United Airlines",
-                    logo: "united",
-                    departure: { city: "Los Angeles (LAX)", time: "10:15 AM", date: "Tue, Jun 13" },
-                    arrival: { city: "Tokyo (HND)", time: "02:30 PM", date: "Wed, Jun 14" },
-                    duration: "11h 15m",
-                    stops: "1 stop (SFO)",
-                    price: 789,
-                    deal: "",
-                    seats: 8
-                },
-                {
-                    id: 3,
-                    airline: "Emirates",
-                    logo: "emirates",
-                    departure: { city: "Chicago (ORD)", time: "07:45 PM", date: "Wed, Jun 14" },
-                    arrival: { city: "Dubai (DXB)", time: "06:30 PM", date: "Thu, Jun 15" },
-                    duration: "13h 45m",
-                    stops: "Non-stop",
-                    price: 1099,
-                    deal: "Luxury",
-                    seats: 3
-                },
-                {
-                    id: 4,
-                    airline: "Qatar Airways",
-                    logo: "qatar",
-                    departure: { city: "Miami (MIA)", time: "09:20 AM", date: "Thu, Jun 15" },
-                    arrival: { city: "Doha (DOH)", time: "05:40 AM", date: "Fri, Jun 16" },
-                    duration: "14h 20m",
-                    stops: "Non-stop",
-                    price: 899,
-                    deal: "",
-                    seats: 12
-                },
-                {
-                    id: 5,
-                    airline: "American Airlines",
-                    logo: "american",
-                    departure: { city: "Dallas (DFW)", time: "06:15 AM", date: "Fri, Jun 16" },
-                    arrival: { city: "Paris (CDG)", time: "10:30 AM", date: "Fri, Jun 16" },
-                    duration: "9h 15m",
-                    stops: "Non-stop",
-                    price: 659,
-                    deal: "Popular",
-                    seats: 6
-                },
-                {
-                    id: 6,
-                    airline: "Lufthansa",
-                    logo: "lufthansa",
-                    departure: { city: "Boston (BOS)", time: "04:30 PM", date: "Sat, Jun 17" },
-                    arrival: { city: "Frankfurt (FRA)", time: "06:15 AM", date: "Sun, Jun 18" },
-                    duration: "7h 45m",
-                    stops: "Non-stop",
-                    price: 749,
-                    deal: "",
-                    seats: 9
-                }
+                {% endfor %}
+                {#{#}
+                {#    id: 2,#}
+                {#    airline: "United Airlines",#}
+                {#    logo: "united",#}
+                {#    departure: { city: "Los Angeles (LAX)", time: "10:15 AM", date: "Tue, Jun 13" },#}
+                {#    arrival: { city: "Tokyo (HND)", time: "02:30 PM", date: "Wed, Jun 14" },#}
+                {#    duration: "11h 15m",#}
+                {#    stops: "1 stop (SFO)",#}
+                {#    price: 789,#}
+                {#    deal: "",#}
+                {#    seats: 8#}
+
+                {#{#}
+                {#    id: 3,#}
+                {#    airline: "Emirates",#}
+                {#    logo: "emirates",#}
+                {#    departure: { city: "Chicago (ORD)", time: "07:45 PM", date: "Wed, Jun 14" },#}
+                {#    arrival: { city: "Dubai (DXB)", time: "06:30 PM", date: "Thu, Jun 15" },#}
+                {#    duration: "13h 45m",#}
+                {#    stops: "Non-stop",#}
+                {#    price: 1099,#}
+                {#    deal: "Luxury",#}
+                {#    seats: 3#}
+
+                {#{#}
+                {#    id: 4,#}
+                {#    airline: "Qatar Airways",#}
+                {#    logo: "qatar",#}
+                {#    departure: { city: "Miami (MIA)", time: "09:20 AM", date: "Thu, Jun 15" },#}
+                {#    arrival: { city: "Doha (DOH)", time: "05:40 AM", date: "Fri, Jun 16" },#}
+                {#    duration: "14h 20m",#}
+                {#    stops: "Non-stop",#}
+                {#    price: 899,#}
+                {#    deal: "",#}
+                {#    seats: 12#}
+
+                {#{#}
+                {#    id: 5,#}
+                {#    airline: "American Airlines",#}
+                {#    logo: "american",#}
+                {#    departure: { city: "Dallas (DFW)", time: "06:15 AM", date: "Fri, Jun 16" },#}
+                {#    arrival: { city: "Paris (CDG)", time: "10:30 AM", date: "Fri, Jun 16" },#}
+                {#    duration: "9h 15m",#}
+                {#    stops: "Non-stop",#}
+                {#    price: 659,#}
+                {#    deal: "Popular",#}
+                {#    seats: 6#}
+
+                {#{#}
+                {#    id: 6,#}
+                {#    airline: "Lufthansa",#}
+                {#    logo: "lufthansa",#}
+                {#    departure: { city: "Boston (BOS)", time: "04:30 PM", date: "Sat, Jun 17" },#}
+                {#    arrival: { city: "Frankfurt (FRA)", time: "06:15 AM", date: "Sun, Jun 18" },#}
+                {#    duration: "7h 45m",#}
+                {#    stops: "Non-stop",#}
+                {#    price: 749,#}
+                {#    deal: "",#}
+                {#    seats: 9#}
+
             ];
 
             function renderFlights() {
