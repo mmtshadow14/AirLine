@@ -73,20 +73,20 @@ class all_flight(View):
     def get(self, request, flight_dep=None, flight_des=None):
         flights = Flights.objects.all()
         form = self.form_class
-        if flight_dep is not None and flight_des is not None:
+        if flight_dep != "None" and flight_des != "None":
             flights = flights.filter(departure=flight_dep, destination=flight_des)
             if flights:
                 return render(request, self.template_name, {'flights': flights, 'form': form})
             messages.warning(request, 'we don\'t have any flights to fit your conditions.')
-            return redirect('all_flights')
-        elif flight_dep is not None and flight_des is None:
+            return redirect('flights:all_flight')
+        elif flight_dep != "None" and flight_des == "None":
             flights = flights.filter(departure=flight_dep)
             if flights:
                 return render(request, self.template_name, {'flights': flights, 'form': form})
             messages.warning(request, 'we don\'t have any flights to fit your conditions.')
             return redirect('all_flights')
-        elif flight_dep is None and flight_des is not None:
-            flights = Flights.objects.filter(destination=flight_des)
+        elif flight_dep == "None" and flight_des != "None":
+            flights = flights.filter(destination=flight_des)
             if flights:
                 return render(request, self.template_name, {'flights': flights, 'form': form})
             messages.warning(request, 'we don\'t have any flights to fit your conditions.')
@@ -96,17 +96,20 @@ class all_flight(View):
     def post(self, request, flight_dep=None, flight_des=None):
         form = self.form_class(request.POST)
         if form.is_valid():
-            if not form.cleaned_data['departure'] and not form.cleaned_data['destination']:
-                return redirect('flights:filter_flight')
-            elif form.cleaned_data['departure'] and form.cleaned_data['destination']:
-                departure_filter = form.cleaned_data['departure']
-                destination_filter = form.cleaned_data['destination']
-                return redirect('flights:filter_flight', departure_filter, destination_filter)
-            elif form.cleaned_data['departure'] and not form.cleaned_data['destination']:
-                departure_filter = form.cleaned_data['departure']
-                return redirect('flights:filter_flight', departure_filter)
-            else:
-                destination_filter = form.cleaned_data['destination']
-                return redirect('flights:filter_flight', destination_filter)
+        #     if not form.cleaned_data['departure'] and not form.cleaned_data['destination']:
+        #         return redirect('flights:all_flight')
+        #     elif form.cleaned_data['departure'] and form.cleaned_data['destination']:
+        #         departure_filter = form.cleaned_data['departure']
+        #         destination_filter = form.cleaned_data['destination']
+        #         return redirect('flights:filter_flight', departure_filter, destination_filter)
+        #     elif form.cleaned_data['departure'] and not form.cleaned_data['destination']:
+        #         departure_filter = form.cleaned_data['departure']
+        #         return redirect('flights:filter_flight', departure_filter, None)
+        #     else:
+        #         destination_filter = form.cleaned_data['destination']
+        #         return redirect('flights:filter_flight', None, destination_filter)
+        # messages.error(request, 'something went wrong!')
+        # return redirect('flights:all_flight')
+            return redirect('flights:filter_flight', form.cleaned_data['departure'], form.cleaned_data['destination'])
         messages.error(request, 'something went wrong!')
         return redirect('flights:all_flight')
