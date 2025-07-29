@@ -284,6 +284,80 @@
                 padding: 16px;
             }
         }
+
+                /* Main form container */
+        .support-container {
+            max-width: 800px;  /* Increased to accommodate side-by-side layout */
+            margin: 30px auto;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form title */
+        .form-title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        /* Form input styling */
+        .form-control {
+            width: 75%;  /* Changed to 70% */
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 10px;  /* Rounded left side only */
+            transition: border-color 0.3s ease;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        /* Form group for spacing */
+        .form-group {
+            margin-bottom: 4px;
+            border-radius: 10px;
+            display: flex;  /* Added for flex layout */
+        }
+
+        /* Submit button */
+        .submit-btn {
+            background-color: steelblue;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 10px;  /* Rounded right side only */
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 25%;  /* Changed to 30% */
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: 0;  /* Removed previous margin */
+            margin-left: 1%;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Error messages */
+        .errorlist {
+            color: #e74c3c;
+            list-style: none;
+            padding-left: 0;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
     </style>
 </head>
 <body>
@@ -306,7 +380,6 @@
                 <div class="message-content">
                     <div class="message-header">
                         <span class="message-sender">Support Team</span>
-                        <span class="message-time">2:30 PM</span>
                     </div>
                     <div class="message-bubble">
                         Hello! Welcome to our support chat. How can we help you today?
@@ -314,58 +387,55 @@
                 </div>
             </div>
 
-            <div class="message customer">
-                <div class="message-avatar">U</div>
-                <div class="message-content">
-                    <div class="message-header">
-                        <span class="message-sender">You</span>
-                        <span class="message-time">2:31 PM</span>
+            {% for msg in all_messages %}
+                {% if msg.msg_sender_role == "user" %}
+                    <div class="message customer">
+                        <div class="message-avatar">U</div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-sender">{{ request.user.full_name }}</span>
+                                <span class="message-time">{{ msg.created_at }}</span>
+                            </div>
+                            <div class="message-bubble">
+                                {{ msg.message }}
+                            </div>
+                        </div>
                     </div>
-                    <div class="message-bubble">
-                        Hi, I have a question about my account settings.
+                {% elif msg.msg_sender_role == "AI" %}
+                    <div class="message support">
+                        <div class="message-avatar">S</div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-sender">Support Team</span>
+                                <span class="message-time">{{ msg.created_at }}</span>
+                            </div>
+                            <div class="message-bubble">
+                                {{ msg.message }}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="message support">
-                <div class="message-avatar">S</div>
-                <div class="message-content">
-                    <div class="message-header">
-                        <span class="message-sender">Support Team</span>
-                        <span class="message-time">2:32 PM</span>
-                    </div>
-                    <div class="message-bubble">
-                        I'd be happy to help you with your account settings. What specific issue are you experiencing?
-                    </div>
-                </div>
-            </div>
-
-            <!-- Typing indicator -->
-            <div class="typing-indicator" id="typingIndicator">
-                Support team is typing...
-            </div>
+                {% endif %}
+            {% endfor %}
         </div>
 
         <!-- Chat Input -->
         <div class="chat-input">
-            <form class="input-form" id="messageForm" method="POST" action="{% url 'flights:support' %}">
-                {% csrf_token %}
-                <div class="input-wrapper">
-                    <textarea
-                        class="message-input"
-                        id="messageInput"
-                        placeholder="Type your message here..."
-                        rows="1"
-                    ></textarea>
-                </div>
-                <button type="submit" class="send-button" id="sendButton">
-                    <span>Send</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22,2 15,22 11,13 2,9"></polygon>
-                    </svg>
-                </button>
-            </form>
+                <form method="post" >
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        {{ form.message }}
+                        <button type="submit" class="submit-btn">Send</button>
+                    </div>
+
+                    {% if form.message.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.message.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </form>
         </div>
     </div>
 

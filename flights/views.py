@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from flights.models import Flights, Tickets, homepage_objects, support_massages
 
 # in app forms
-from flights.forms import flight_filter_form
+from flights.forms import flight_filter_form, support_form
 
 # OpenAI config
 client = OpenAI(
@@ -133,25 +133,40 @@ class support(LoginRequiredMixin, View):
      which is an AI will answer this his questions base on the information that we learned our AI.
     """
     template_name = 'flights/support.html'
+    form_class = support_form
 
     def get(self, request):
+        form = self.form_class
         all_messages = support_massages.objects.filter(user=request.user)
-        return render(request, 'flights/support.html', {'all_messages': all_messages, })
+        return render(request, 'flights/support.html', {'form': form, 'all_messages': all_messages, })
 
     def post(self, request):
-        message = request.POST.get('message', '').strip()
-        user = request.user
-        if message:
-            user_message = support_massages.objects.create(user=user, msg_sender_role='user', message=message)
-            response = client.responses.create(
-                model="gpt-4o-mini",
-                input=message,
-                store=True,
-            )
-            AI_response = response.output_text
-            AI_message = support_massages.objects.create(user=user, msg_sender_role='AI', message=AI_response)
-            user_message.save()
-            AI_message.save()
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            user = request.user
+            if form.cleaned_data['message']:
+                user_message = support_massages.objects.create(user=user, msg_sender_role='user', message=form.cleaned_data['message'])
+                response = client.responses.create(
+                    model="gpt-4o-mini",
+                    input=[
+                        {
+                            "role": "system",
+                            "content": "be the support of an Airline site and answer the questions base on the information that I will give you now,"
+                                       " you can buy tickets from the the main page and flights page and you can filter flights with the departure and destination that you want,"
+                                       " and you can see the tickets that you booked in my tickets page, and we sell plane tickets in this site.",
+                        },
+                        {
+                            "role": "user",
+                            "content": form.cleaned_data['message']
+                        }
+                    ],
+                    store=True,
+                )
+                AI_response = response.output_text
+                AI_message = support_massages.objects.create(user=user, msg_sender_role='AI', message=AI_response)
+                user_message.save()
+                AI_message.save()
+                return redirect('flights:support')
             return redirect('flights:support')
         messages.error(request, 'something went wrong!!!')
         return redirect('flights:support')
