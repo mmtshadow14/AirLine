@@ -24,11 +24,18 @@ class flight_filter_form(forms.Form):
     )
 
     def clean_departure(self):
-        """Convert empty departure to None"""
         departure = self.cleaned_data.get('departure')
         return departure if departure else None  # Returns None for empty string
 
     def clean_destination(self):
-        """Convert empty destination to None"""
         destination = self.cleaned_data.get('destination')
         return destination if destination else None  # Returns None for empty string
+
+
+class support_form(forms.Form):
+    message = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Write Your Message'
+    }
+    )
+    )

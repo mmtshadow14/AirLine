@@ -39,9 +39,28 @@ class Tickets(models.Model):
         return f'{self.ticket_owner.full_name} owns Ticket for {self.flight_id.flight_id} flight.'
 
 
+# home page objects model
 class homepage_objects(models.Model):
+    """
+    this is a model to store home page objects to render in the home page.
+    """
     object_id = models.IntegerField(primary_key=True, unique=True)
     back_ground_for_flights = models.ImageField(upload_to='obj/')
 
     def __str__(self):
         return str(self.object_id)
+
+
+# support massages model
+class support_massages(models.Model):
+    """
+    this is a model to store support massages objects to render in the support page.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='support_massages')
+    msg_sender_role = models.CharField(max_length=100)
+    message = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.msg_sender_role}: {self.message}."

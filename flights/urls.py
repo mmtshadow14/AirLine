@@ -12,4 +12,5 @@ urlpatterns = [
     path('book_flight/<int:flight_id>/', views.book_flight.as_view(), name='book_flight'),
     path('all_flight/', views.all_flight.as_view(), name='all_flight'),
     path('filter_flight/<str:flight_dep>/<str:flight_des>/', views.all_flight.as_view(), name='filter_flight'),
+    path('support/', views.support.as_view(), name='support'),
 ]

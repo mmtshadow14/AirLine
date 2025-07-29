@@ -1,0 +1,508 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Chat Room</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            min-height: 100vh;
+        }
+
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: white;
+            padding: 20px;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .chat-header h1 {
+            color: #1f2937;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .chat-header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .chat-messages {
+            background: white;
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 500px;
+            min-height: 400px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .message.customer {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 0 12px;
+            flex-shrink: 0;
+        }
+
+        .message.customer .message-avatar {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .message.support .message-avatar {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .message-content {
+            max-width: 70%;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+            gap: 8px;
+        }
+
+        .message.customer .message-header {
+            flex-direction: row-reverse;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .message.customer .message-bubble {
+            background: #2563eb;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.support .message-bubble {
+            background: #f3f4f6;
+            color: #1f2937;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-input {
+            background: white;
+            padding: 20px;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .input-form {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-wrapper {
+            flex: 1;
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            resize: none;
+            outline: none;
+            transition: border-color 0.2s ease;
+            font-family: inherit;
+            min-height: 44px;
+            max-height: 120px;
+        }
+
+        .message-input:focus {
+            border-color: #2563eb;
+        }
+
+        .send-button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .send-button:hover {
+            background: #1d4ed8;
+        }
+
+        .send-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 12px 20px;
+            color: #6b7280;
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        .typing-indicator.show {
+            display: block;
+        }
+
+        .online-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        .status-text {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scrollbar styling */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .chat-container {
+                padding: 10px;
+            }
+
+            .chat-header {
+                padding: 16px;
+            }
+
+            .chat-messages {
+                padding: 16px;
+                max-height: 400px;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .chat-input {
+                padding: 16px;
+            }
+        }
+
+                /* Main form container */
+        .support-container {
+            max-width: 800px;  /* Increased to accommodate side-by-side layout */
+            margin: 30px auto;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form title */
+        .form-title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        /* Form input styling */
+        .form-control {
+            width: 75%;  /* Changed to 70% */
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 10px;  /* Rounded left side only */
+            transition: border-color 0.3s ease;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        /* Form group for spacing */
+        .form-group {
+            margin-bottom: 4px;
+            border-radius: 10px;
+            display: flex;  /* Added for flex layout */
+        }
+
+        /* Submit button */
+        .submit-btn {
+            background-color: steelblue;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 10px;  /* Rounded right side only */
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 25%;  /* Changed to 30% */
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: 0;  /* Removed previous margin */
+            margin-left: 1%;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Error messages */
+        .errorlist {
+            color: #e74c3c;
+            list-style: none;
+            padding-left: 0;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <h1>SkyWings Support Chat</h1>
+            <p>We're here to help you with any questions about the site</p>
+            <div class="online-status">
+                <div class="status-dot"></div>
+                <span class="status-text">Support team is online</span>
+            </div>
+        </div>
+
+        <!-- Chat Messages Area -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- Example messages - replace with Django template logic -->
+            <div class="message support">
+                <div class="message-avatar">S</div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="message-sender">Support Team</span>
+                    </div>
+                    <div class="message-bubble">
+                        Hello! Welcome to the SKYWINGS support. How can we help you today?
+                    </div>
+                </div>
+            </div>
+
+            {% for msg in all_messages %}
+                {% if msg.msg_sender_role == "user" %}
+                    <div class="message customer">
+                        <div class="message-avatar">U</div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-sender">{{ request.user.full_name }}</span>
+                                <span class="message-time">{{ msg.created_at }}</span>
+                            </div>
+                            <div class="message-bubble">
+                                {{ msg.message }}
+                            </div>
+                        </div>
+                    </div>
+                {% elif msg.msg_sender_role == "AI" %}
+                    <div class="message support">
+                        <div class="message-avatar">S</div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-sender">Support Team</span>
+                                <span class="message-time">{{ msg.created_at }}</span>
+                            </div>
+                            <div class="message-bubble">
+                                {{ msg.message }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input">
+                <form method="post" >
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        {{ form.message }}
+                        <button type="submit" class="submit-btn">Send</button>
+                    </div>
+
+                    {% if form.message.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.message.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </form>
+        </div>
+    </div>
+
+    <script>
+        // Basic JavaScript for demo functionality
+        // You can replace this with your Django/Python backend integration
+
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatMessages = document.getElementById('chatMessages');
+        const messageForm = document.getElementById('messageForm');
+
+        // Auto-resize textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Handle form submission
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const message = messageInput.value.trim();
+            if (message) {
+                addMessage(message, 'customer');
+                messageInput.value = '';
+                messageInput.style.height = 'auto';
+
+                // Simulate support response (remove this in Django)
+                setTimeout(() => {
+                    addMessage("Thank you for your message. Let me help you with that.", 'support');
+                }, 1000);
+            }
+        });
+
+        // Add message to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            const currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const senderName = sender === 'customer' ? 'You' : 'Support Team';
+            const avatar = sender === 'customer' ? 'U' : 'S';
+
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="message-sender">${senderName}</span>
+                        <span class="message-time">${currentTime}</span>
+                    </div>
+                    <div class="message-bubble">${text}</div>
+                </div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Enter key to send (Shift+Enter for new line)
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                messageForm.dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>
+
+{% endblock %}
