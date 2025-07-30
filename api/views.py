@@ -64,3 +64,15 @@ class api_activation(APIView):
             return Response({"message": "Invalid activation code"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"message": "Invalid activation code"}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class get_JWT(APIView):
+    def post(self, request):
+
+
+
+
+
+
+
+
+
