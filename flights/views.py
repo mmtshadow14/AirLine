@@ -174,11 +174,12 @@ class support(LoginRequiredMixin, View):
 
 
 # view to see the booked tickets
-class my_tickets(View):
+class my_tickets(LoginRequiredMixin, View):
     """
     this is a view for the user to see the flights that he already booked.
     """
     template_name = 'flights/my_tickets.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        booked_tickets = Tickets.objects.filter(ticket_owner=request.user)
+        return render(request, self.template_name, {'booked_tickets': booked_tickets})

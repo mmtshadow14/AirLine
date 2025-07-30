@@ -1,5 +1,257 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <div class="container mx-auto px-4 py-8">
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Sidebar - Profile Info -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="gradient-bg p-6 text-white">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-blue-800 font-bold text-2xl">
+                                JD
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold" style="color: black">{{ request.user.full_name }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-gray-500 text-sm">Phone Number</p>
+                                <p class="font-medium">{{ request.user.phone_number }}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Address</p>
+                                <p class="font-medium">{{ request.user.address }}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Member Since</p>
+                                <p class="font-medium">{{ request.user.created }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Wallet Section -->
+                <div class="bg-white rounded-xl shadow-md mt-6 p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">My Wallet</h3>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <p class="text-gray-500 text-sm">Available Balance</p>
+                        <div class="flex items-end justify-between">
+                            <p class="text-3xl font-bold text-blue-800">${{ request.user.wallet }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Content - Bookings -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <!-- Tabs -->
+                    <div class="border-b border-gray-200">
+                        <nav class="flex -mb-px">
+                            <button id="upcoming-tab" class="tab-active py-4 px-6 text-center border-transparent font-medium text-sm">
+                                Upcoming Flights
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="p-6">
+                        <!-- Upcoming Flights -->
+                        <div id="upcoming-content" class="space-y-4">
+                            {% for ticket in booked_tickets %}
+                            <div class="ticket-card bg-white border border-gray-200 rounded-lg p-4">
+
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <div class="flex items-center space-x-2 mb-2">
+                                            <span class="status-badge active">Confirmed</span>
+                                            <span class="text-gray-500 text-sm">Booking | Flight ID: {{ ticket.flight_id.flight_id }}</span>
+                                        </div>
+                                        <div class="flex items-center space-x-4">
+                                            <div class="text-center">
+                                                <p class="text-2xl font-bold">{{ticket.flight_id.departure}}</p>
+                                                <p class="text-gray-500 text-sm">{{ticket.flight_id.departure_time}}</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <p class="text-gray-500 text-sm">{{ticket.flight_id.flight_time}}</p>
+                                                <div class="relative w-32">
+                                                    <div class="h-px bg-gray-300 w-full absolute top-1/2"></div>
+                                                    <div class="absolute -top-2 left-0 w-3 h-3 rounded-full bg-blue-500"></div>
+                                                    <div class="absolute -top-2 right-0 w-3 h-3 rounded-full bg-blue-500"></div>
+                                                </div>
+                                                <p class="text-gray-500 text-sm">Non-stop</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <p class="text-2xl font-bold">{{ticket.flight_id.destination}}</p>
+                                                <p class="text-gray-500 text-sm">{{ticket.flight_id.arrival_time}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-lg font-bold text-blue-800">${{ticket.flight_id.flight_price}}</p>
+                                        <div class="mt-2 space-x-2">
+                                            <a  class="bg-blue-100 hover:bg-blue-200 text-blue-800 py-1 px-3 rounded-full text-sm" href={% url 'flights:flight_detail' ticket.flight_id.flight_id %}>
+                                                View Flight
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Past Flights (hidden by default) -->
+                        <div id="past-content" class="space-y-4 hidden">
+                            <div class="ticket-card bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <div class="flex items-center space-x-2 mb-2">
+                                            <span class="status-badge completed">Completed</span>
+                                            <span class="text-gray-500 text-sm">Booking #SKW456123</span>
+                                        </div>
+                                        <div class="flex items-center space-x-4">
+                                            <div class="text-center">
+                                                <p class="text-2xl font-bold">DFW</p>
+                                                <p class="text-gray-500 text-sm">3:45 PM</p>
+                                                <p class="text-gray-500 text-sm">5 May</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <p class="text-gray-500 text-sm">3h 10m</p>
+                                                <div class="relative w-32">
+                                                    <div class="h-px bg-gray-300 w-full absolute top-1/2"></div>
+                                                    <div class="absolute -top-2 left-0 w-3 h-3 rounded-full bg-gray-500"></div>
+                                                    <div class="absolute -top-2 right-0 w-3 h-3 rounded-full bg-gray-500"></div>
+                                                </div>
+                                                <p class="text-gray-500 text-sm">Non-stop</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <p class="text-2xl font-bold">DEN</p>
+                                                <p class="text-gray-500 text-sm">6:55 PM</p>
+                                                <p class="text-gray-500 text-sm">5 May</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-lg font-bold text-blue-800">$295.00</p>
+                                        <p class="text-gray-500 text-sm">Economy</p>
+                                        <div class="mt-2">
+                                            <button class="bg-blue-100 hover:bg-blue-200 text-blue-800 py-1 px-3 rounded-full text-sm">
+                                                View Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cancelled Flights (hidden by default) -->
+                        <div id="cancelled-content" class="space-y-4 hidden">
+                            <div class="ticket-card bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <div class="flex items-center space-x-2 mb-2">
+                                            <span class="status-badge cancelled">Cancelled</span>
+                                            <span class="text-gray-500 text-sm">Booking #SKW987654</span>
+                                        </div>
+                                        <div class="flex items-center space-x-4">
+                                            <div class="text-center">
+                                                <p class="text-2xl font-bold">ATL</p>
+                                                <p class="text-gray-500 text-sm">9:20 AM</p>
+                                                <p class="text-gray-500 text-sm">12 Apr</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <p class="text-gray-500 text-sm">2h 30m</p>
+                                                <div class="relative w-32">
+                                                    <div class="h-px bg-gray-300 w-full absolute top-1/2"></div>
+                                                    <div class="absolute -top-2 left-0 w-3 h-3 rounded-full bg-red-500"></div>
+                                                    <div class="absolute -top-2 right-0 w-3 h-3 rounded-full bg-red-500"></div>
+                                                </div>
+                                                <p class="text-gray-500 text-sm">Non-stop</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <p class="text-2xl font-bold">MIA</p>
+                                                <p class="text-gray-500 text-sm">11:50 AM</p>
+                                                <p class="text-gray-500 text-sm">12 Apr</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-lg font-bold text-blue-800">$320.00</p>
+                                        <p class="text-gray-500 text-sm">Economy</p>
+                                        <div class="mt-2">
+                                            <button class="bg-blue-100 hover:bg-blue-200 text-blue-800 py-1 px-3 rounded-full text-sm">
+                                                View Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promo Section -->
+                <div class="mt-6 bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl p-6 text-white">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Ready for your next adventure?</h3>
+                            <p class="mb-4">Get 15% off your next flight when you book before June 30th!</p>
+                            <a class="bg-white text-blue-800 hover:bg-gray-100 py-2 px-6 rounded-full font-medium" href={% url 'flights:all_flight' %}>
+                                Book Now
+                            </a>
+                        </div>
+                        <div class="mt-4 md:mt-0">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2061/2061914.png" alt="Airplane" class="w-32 h-32 object-contain">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+    <script>
+        // Tab switching functionality
+        const tabs = {
+            'upcoming-tab': 'upcoming-content',
+            'past-tab': 'past-content',
+            'cancelled-tab': 'cancelled-content'
+        };
+
+        Object.entries(tabs).forEach(([tabId, contentId]) => {
+            const tab = document.getElementById(tabId);
+            const content = document.getElementById(contentId);
+
+            tab.addEventListener('click', () => {
+                // Hide all content
+                Object.values(tabs).forEach(id => {
+                    document.getElementById(id).classList.add('hidden');
+                });
+
+                // Remove active class from all tabs
+                Object.keys(tabs).forEach(id => {
+                    document.getElementById(id).classList.remove('tab-active');
+                    document.getElementById(id).classList.add('text-gray-500');
+                });
+
+                // Show selected content and mark tab as active
+                content.classList.remove('hidden');
+                tab.classList.add('tab-active');
+                tab.classList.remove('text-gray-500');
+            });
+        });
+
+        // Simulate loading data
+        document.addEventListener('DOMContentLoaded', () => {
+            // In a real app, you would fetch user data here
+            console.log('Account page loaded');
+        });
+    </script>
 {% endblock %}
