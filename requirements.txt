@@ -6,3 +6,4 @@ pytz
 redis
 djangorestframework
 openai
+djangorestframework-simplejwt

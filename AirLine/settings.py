@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'accounts',
     'flights',
     'rest_framework',
+    'rest_framework_simplejwt',
     'api',
 
 ]
@@ -128,3 +129,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # USER AUTH MODEL
 AUTH_USER_MODEL = 'accounts.User'
+
+
+# DJANGO REST FRAMEWORK CONFIG
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
