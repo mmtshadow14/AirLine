@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # api app models
-from .serializers import api_register, api_activation
+from .serializers import api_register, api_activation, api_get_JWT
 
 # accounts app models
 from accounts.models import User, ActivationCode
@@ -17,6 +17,9 @@ from flights.models import Flights, Tickets
 
 # utils
 from utils import store_activation_info
+
+# JWT
+from jwt import create_access_token, retrieve_user_via_jwt
 
 
 # register user via api
@@ -65,8 +68,20 @@ class api_activation(APIView):
         return Response({"message": "Invalid activation code"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# generate JWT access token
 class get_JWT(APIView):
+    """
+    with this api view we will generate the user a new JWT token if his account was active
+    """
     def post(self, request):
+        ser_data = api_get_JWT(data=request.data)
+        if ser_data.is_valid():
+            user = User.objects.get(phone_number=ser_data.validated_data['phone_number'])
+            if user.is_active and user.password == ser_data.validated_data['password']:
+                generated_token = create_access_token(ser_data.validated_data['phone_number'])
+                return Response({"token": generated_token}, status=status.HTTP_201_CREATED)
+            return Response({"message": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
