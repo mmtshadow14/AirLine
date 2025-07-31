@@ -21,5 +21,7 @@ class store_activation_info():
         from_email = 'mmtmmt945@gmail.com'
         recipient_list = [self.phone_number]
         send_mail(subject, message, from_email, recipient_list, fail_silently=True)
-
+        print('========================================')
+        print(self.activation_code)
+        print('========================================')
         self.session.save()
