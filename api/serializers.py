@@ -29,3 +29,17 @@ class api_get_JWT(serializers.Serializer):
     """
     phone_number = serializers.CharField(max_length=11)
     password = serializers.CharField(max_length=100)
+
+
+# retrieve flight serializer
+class api_retrieve_flights(serializers.Serializer):
+    """
+    this serializer is going to be used to serialize app's flights plans
+    """
+    flight_id = serializers.IntegerField()
+    departure = serializers.CharField(max_length=100)
+    destination = serializers.CharField(max_length=100)
+    departure_time = serializers.DateTimeField()
+    arrival_time = serializers.DateTimeField()
+    flight_capacity = serializers.IntegerField()
+    flight_price = serializers.IntegerField()
