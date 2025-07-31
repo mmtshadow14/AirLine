@@ -36,3 +36,17 @@ def retrieve_user_via_jwt(token):
     if user:
         return user
     return {'message': 'User not found'}
+
+
+# check JWT validation status
+def jwt_token_status(token):
+    """
+    check the JWT token validation
+    """
+    payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms='HS256')
+    if payload['exp'] < int(time.time()):
+        return False
+    user = User.objects.get(phone_number=payload['user_phone_number'])
+    if user:
+        return True
+    return False
