@@ -13,4 +13,5 @@ urlpatterns = [
     path('all_flight/', views.all_flight.as_view(), name='all_flight'),
     path('filter_flight/<str:flight_dep>/<str:flight_des>/', views.all_flight.as_view(), name='filter_flight'),
     path('support/', views.support.as_view(), name='support'),
+    path('my_tickets/', views.my_tickets.as_view(), name='my_tickets'),
 ]

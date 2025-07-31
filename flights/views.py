@@ -145,7 +145,8 @@ class support(LoginRequiredMixin, View):
         if form.is_valid():
             user = request.user
             if form.cleaned_data['message']:
-                user_message = support_massages.objects.create(user=user, msg_sender_role='user', message=form.cleaned_data['message'])
+                user_message = support_massages.objects.create(user=user, msg_sender_role='user',
+                                                               message=form.cleaned_data['message'])
                 response = client.responses.create(
                     model="gpt-4o-mini",
                     input=[
@@ -170,3 +171,15 @@ class support(LoginRequiredMixin, View):
             return redirect('flights:support')
         messages.error(request, 'something went wrong!!!')
         return redirect('flights:support')
+
+
+# view to see the booked tickets
+class my_tickets(LoginRequiredMixin, View):
+    """
+    this is a view for the user to see the flights that he already booked.
+    """
+    template_name = 'flights/my_tickets.html'
+
+    def get(self, request):
+        booked_tickets = Tickets.objects.filter(ticket_owner=request.user)
+        return render(request, self.template_name, {'booked_tickets': booked_tickets})
