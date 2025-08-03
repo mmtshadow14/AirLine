@@ -15,12 +15,13 @@ def create_access_token(user_phone_number):
     """
     we will generate a JWT token for the user with placing his account ID in the payload of the JWT token.
     """
-    pyload = {
+    payload = {
         'user_phone_number': user_phone_number,
         'iat': datetime.datetime.utcnow(),
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
     }
-    return jwt.encode(pyload, settings.JWT_SECRET_KEY, algorithm='HS256')
+    secret_key = 'jwt'
+    return jwt.encode(payload, secret_key, algorithm='HS256')
 
 
 # retrieve the user

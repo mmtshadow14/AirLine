@@ -19,7 +19,7 @@ from flights.models import Flights, Tickets
 from utils import store_activation_info
 
 # JWT
-from jwt import create_access_token, retrieve_user_via_jwt, jwt_token_status
+from auth_token import create_access_token, retrieve_user_via_jwt, jwt_token_status
 
 
 # register user via api
