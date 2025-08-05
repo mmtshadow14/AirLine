@@ -13,13 +13,13 @@ from .serializers import api_register, api_activation, api_get_JWT, api_retrieve
 from accounts.models import User, ActivationCode
 
 # flights app models
-from flights.models import Flights, Tickets
+from flights.models import Flights
 
 # utils
 from utils import store_activation_info
 
 # JWT
-from auth_token import create_access_token, retrieve_user_via_jwt, jwt_token_status
+from auth.auth_token import create_access_token, jwt_token_status
 
 
 # register user via api
@@ -93,9 +93,7 @@ class get_all_flight(APIView):
             if token_status:
                 flights = Flights.objects.all()
                 ser_data = api_retrieve_flights(instance=flights, many=True)
-                if ser_data.is_valid():
-                    return Response(ser_data.data, status=status.HTTP_200_OK)
-                return Response({'message': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(ser_data.data, status=status.HTTP_200_OK)
             return Response({'message': 'Invalid Token'}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'No Token Retrieved'}, status=status.HTTP_400_BAD_REQUEST)
 

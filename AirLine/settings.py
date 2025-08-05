@@ -136,4 +136,4 @@ AUTH_USER_MODEL = 'accounts.User'
 
 
 # JWT CONFIGS
-JWT_SECRET_KEY = 'test'
+JWT_SECRET_KEY = 'jwt'
