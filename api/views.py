@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # api app models
-from .serializers import api_register, api_activation, api_get_JWT, api_retrieve_flights
+from .serializers import api_register, api_activation, api_get_JWT, api_retrieve_flights, api_filter_flights
 
 # accounts app models
 from accounts.models import User, ActivationCode
@@ -86,6 +86,9 @@ class get_JWT(APIView):
 
 # retrieve all flights
 class get_all_flight(APIView):
+    """
+    ret
+    """
     def get(self, request):
         header_token = request.headers.get('Authorization')
         if header_token:
@@ -98,9 +101,41 @@ class get_all_flight(APIView):
         return Response({'message': 'No Token Retrieved'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
+# filter flights api view
+class filter_flight(APIView):
+    """
+    with this api view we will filter the flight based on user departure and destination
+    """
+    def post(self, request):
+        header_token = request.headers.get('Authorization')
+        if header_token:
+            token_status = jwt_token_status(header_token)
+            if token_status:
+                ser_data = api_filter_flights(data=request.data)
+                if ser_data.is_valid():
+                    departure = ser_data.validated_data['departure']
+                    destination = ser_data.validated_data['destination']
+                    if departure is not None and destination is not None:
+                        flights = Flights.objects.filter(departure=departure, destination=destination)
+                        flights_ser_data = api_retrieve_flights(instance=flights, many=True)
+                        if flights_ser_data:
+                            return Response(flights_ser_data.data, status=status.HTTP_200_OK)
+                        return Response({'message': 'we don\'t have any flights to fit your conditions.'}, status=status.HTTP_404_NOT_FOUND)
+                    elif departure is not None and destination is None:
+                        flights = Flights.objects.filter(departure=departure)
+                        flights_ser_data = api_retrieve_flights(instance=flights, many=True)
+                        if flights_ser_data:
+                            return Response(flights_ser_data.data, status=status.HTTP_200_OK)
+                        return Response({'message': 'we don\'t have any flights to fit your conditions.'}, status=status.HTTP_404_NOT_FOUND)
+                    elif departure is None and destination is not None:
+                        flights = Flights.objects.filter(destination=destination)
+                        flights_ser_data = api_retrieve_flights(instance=flights, many=True)
+                        if flights_ser_data:
+                            return Response(flights_ser_data.data, status=status.HTTP_200_OK)
+                        return Response({'message': 'we don\'t have any flights to fit your conditions.'}, status=status.HTTP_404_NOT_FOUND)
+                    return Response({'message': 'something went wrong!!!.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Invalid Token'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'No Token Retrieved'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
