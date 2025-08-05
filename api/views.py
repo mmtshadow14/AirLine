@@ -13,13 +13,13 @@ from .serializers import api_register, api_activation, api_get_JWT, api_retrieve
 from accounts.models import User, ActivationCode
 
 # flights app models
-from flights.models import Flights
+from flights.models import Flights, Tickets
 
 # utils
 from utils import store_activation_info
 
 # JWT
-from auth.auth_token import create_access_token, jwt_token_status
+from auth.auth_token import create_access_token, jwt_token_status, retrieve_user_via_jwt
 
 
 # register user via api
@@ -138,8 +138,30 @@ class filter_flight(APIView):
         return Response({'message': 'No Token Retrieved'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
+# API book flight
+class book_flight(APIView):
+    """
+    the user can book a flight via this API view
+    """
+    def get(self, request, flight_id):
+        header_token = request.headers.get('Authorization')
+        if header_token:
+            user = retrieve_user_via_jwt(header_token)
+            if user and user.is_authenticated and user.is_active:
+                flight = Flights.objects.get(flight_id=flight_id)
+                if flight:
+                    if user.wallet > flight.flight_price:
+                        user.wallet -= flight.flight_price
+                        new_ticket = Tickets.objects.create(flight_id=flight, ticket_owner=user)
+                        flight.flight_capacity -= 1
+                        user.save()
+                        new_ticket.save()
+                        flight.save()
+                    return Response({'message': 'Your wallet doesn\'t have enough credit.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'we coulden\'t find the flight with that ID'},
+                                status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': 'we coulden\'t find the User with this credentials'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'message': 'No Token Retrieved'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
