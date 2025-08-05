@@ -50,5 +50,5 @@ class api_filter_flights(serializers.Serializer):
     """
     this serializer is going to be used to serialize the users departure and destination info
     """
-    departure = serializers.CharField(max_length=100)
-    destination = serializers.CharField(max_length=100)
+    departure = serializers.CharField(max_length=100, required=False, default=None)
+    destination = serializers.CharField(max_length=100, required=False, default=None)
