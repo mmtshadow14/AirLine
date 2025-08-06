@@ -164,6 +164,7 @@ class book_flight(APIView):
                         user.save()
                         new_ticket.save()
                         flight.save()
+                        return Response({'message': f'Ticket for Flight Number {flight.flight_id} has been successfully booked.'}, status=status.HTTP_201_CREATED,)
                     return Response({'message': 'Your wallet doesn\'t have enough credit.'}, status=status.HTTP_400_BAD_REQUEST)
                 return Response({'message': 'we coulden\'t find the flight with that ID'},
                                 status=status.HTTP_404_NOT_FOUND)
@@ -256,7 +257,7 @@ class support(APIView):
                     AI_message = support_massages.objects.create(user=user, msg_sender_role='AI', message=AI_response)
                     user_message.save()
                     AI_message.save()
-                    return Response({'message': 'message sent and now you can retrieve it via GET methode'}, status=status.HTTP_201_CREATED_OK)
+                    return Response({'message': 'message sent and now you can retrieve it via GET methode'}, status=status.HTTP_201_CREATED)
                 return Response({'message': 'invalid data'}, status=status.HTTP_406_NOT_ACCEPTABLE_OK)
             return Response({'message': 'we coulden\'t find the User with this credentials'},
                             status=status.HTTP_404_NOT_FOUND)
