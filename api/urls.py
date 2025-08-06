@@ -10,6 +10,10 @@ urlpatterns = [
     path('register/', views.register.as_view(), name='api_register'),
     path('activation/', views.activation.as_view(), name='api_activation'),
     path('get_token/', views.get_JWT.as_view(), name='api_activation'),
-    path('get_flights/', views.get_all_flight().as_view(), name='api_get_all_flights'),
-    path('filter_flights/', views.filter_flight().as_view(), name='api_filter_flights'),
+    path('get_flights/', views.get_all_flight.as_view(), name='api_get_all_flights'),
+    path('filter_flights/', views.filter_flight.as_view(), name='api_filter_flights'),
+    path('book_flight/<int:flight_id>/', views.book_flight.as_view(), name='api_book_flight'),
+    path('booked_flights/', views.booked_flights.as_view(), name='api_booked_flights'),
+    path('retrieve_user_wallet/', views.retrieve_user_wallet.as_view(), name='api_retrieve_user_wallet'),
+    path('support/', views.support.as_view(), name='api_support'),
 ]

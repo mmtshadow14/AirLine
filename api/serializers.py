@@ -52,3 +52,30 @@ class api_filter_flights(serializers.Serializer):
     """
     departure = serializers.CharField(max_length=100, required=False, default=None)
     destination = serializers.CharField(max_length=100, required=False, default=None)
+
+
+# booked flights serializer
+class api_booked_flights(serializers.Serializer):
+    """
+    this serializer is going to be used to serialize the users booked tickets
+    """
+    flight_id = serializers.CharField()
+    ticket_owner = serializers.CharField()
+
+
+# retrieve support message serializer
+class api_support_retrieve_message(serializers.Serializer):
+    """
+    this serializer is going to be used to serialize the users support messages
+    """
+    msg_sender_role = serializers.CharField(max_length=10)
+    message = serializers.CharField()
+    created_at = serializers.DateTimeField()
+
+
+# create support message serializer
+class api_support_create_message(serializers.Serializer):
+    """
+    this serializer is going to be used to serialize the message which is sent via POST methode
+    """
+    message = serializers.CharField()
